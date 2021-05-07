@@ -1,4 +1,4 @@
-#REWRITE THIS TO USE Get-RandPass FROM FUNCTIONS.
+_#REWRITE THIS TO USE Get-RandPass FROM FUNCTIONS.
 function GET-RandPass() {
     Param(
         [int]$length=10
@@ -26,7 +26,7 @@ function Get-UsersFile($filedefault) {
 }
 
 function Get-OU($client) {
-    $ou = "ou=$client,ou=clients,dc=infomc,dc=biz"
+    $ou = "ou=$client,rest_of_ou_here"
     $customou = read-host "Do you want to create the users in $ou ? (Yes/No) "
     if ($customou -ne "Yes") {
         $ou= read-host "OK, enter your own OU: "
@@ -72,11 +72,11 @@ $usernum = 0
 
 $ticket = read-host "What is the TFS ticket number for which these accounts are being created? "
 
-$ou = "ou=users,ou=infomc organization,dc=ad,dc=infomc,dc=com"
+$ou = "ou=users,rest_of_ou_here"
 
 $modeluser = getsinglevalue -posttext "To get hints for all new users from an existing account, enter that account's username now, otherwise, leave this blank: "
 
-$templist = "InfoMC","VPN Users"
+$templist = "some_group","VPN Users"
 $tempgroups = pickmultiplefromlist -listin $templist -pretext "Here are some groups these users are likely to need:" -posttext "Pick the groups appropriate for these users."
 $grouparray += $tempgroups
 
@@ -96,7 +96,7 @@ $genpass = read-host "Are the passwords in the CSV? (Yes/No) (If not, I'll gener
 $curruser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $currdate = get-date -format s
 $descstamp = "$curruser $currdate TFS $ticket"
-$domain = "ad.infomc.com"
+$domain = "dns_domain_here"
 $Users = Import-Csv $file
 foreach ($User in $Users) {
     $usernum += 1
@@ -163,7 +163,7 @@ foreach ($User in $Users) {
     $modeltitle = getsinglevalue -posttext "Enter the job title for $userfirstname $userlastname :" -default "$modeltitle"
     set-aduser $SAM -title "$modeltitle"
 
-    if (-not $modelcompany) {$modelcompany = "InfoMC"}
+    if (-not $modelcompany) {$modelcompany = "model_company_string_here"}
     $modelcompany = getsinglevalue -posttext "Enter the company for $userfirstname $userlastname :" -default "$modelcompany"
     set-aduser $SAM -company "$modelcompany"
     
