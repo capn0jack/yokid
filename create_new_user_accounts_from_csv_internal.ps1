@@ -135,8 +135,8 @@ foreach ($User in $Users) {
         write-warning "Failed to create user $SAM with error: $_."
     }
     
-    $primaryemail = ("$userfirstname.$userlastname@infomc.com").ToLower()
-    $secondaryemail = ("$userfirstname$userlastinitial@infomc.com").ToLower()
+    $primaryemail = ("$userfirstname.$userlastname@domain").ToLower()
+    $secondaryemail = ("$userfirstname$userlastinitial@domain").ToLower()
     $addemails = [System.Collections.ArrayList]@()
     $addemails.add("SMTP:$primaryemail")
     $addemails.add("smtp:$($secondaryemail)")
